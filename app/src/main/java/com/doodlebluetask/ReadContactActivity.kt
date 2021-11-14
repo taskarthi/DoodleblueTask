@@ -36,7 +36,9 @@ class ReadContactActivity : AppCompatActivity() {
             contacts = it
             dataAdapter = MyCustomAdapter(
                 applicationContext, R.layout.contact_info,
-                it!!.sortedBy { it.displayName }
+                it.distinctBy {
+                    it.displayName
+                }.sortedBy { it.displayName }
             )
             lstContacts!!.adapter = dataAdapter
             lstContacts!!.setOnItemClickListener { parent, view, position, id ->

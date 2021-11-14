@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import com.doodlebluetask.R
 
 
@@ -23,38 +24,22 @@ class PhoneStateReceiver : BroadcastReceiver() {
             val preferences = context.getSharedPreferences("login", 0)
             val strMobile = preferences.getString("mobile", null)
             val strName = preferences.getString("name", null)
-            Log.i("mobile", strMobile.toString())
-            Log.i("mobile1", incomingNumber.toString())
 
             if (!strMobile.isNullOrEmpty() && PhoneNumberUtils.compare(
                     context,
-                    strMobile,
+                    strMobile.trim(),
                     incomingNumber
                 )
             ) {
+                Log.i("mobile", strMobile.toString())
+                Log.i("mobile1", incomingNumber.toString())
                 //start activity which has dialog
-                val toast: Toast = Toast.makeText(
-                    context,
-                    "Name: $strName Number: $incomingNumber",
-                    Toast.LENGTH_LONG
-                )
-                val toastView = toast.view // This'll return the default View of the Toast.
-                val toastMessage = toastView!!.findViewById<View>(android.R.id.message) as TextView
-                toastMessage.textSize = 25f
-                toastMessage.setTextColor(Color.WHITE)
-                toastMessage.setCompoundDrawablesWithIntrinsicBounds(
-                    R.mipmap.ic_launcher_round,
-                    0,
-                    0,
-                    0
-                )
-                toastMessage.gravity = Gravity.CENTER
-                toastMessage.compoundDrawablePadding = 16
-                toastView.setBackgroundColor(Color.BLACK)
-                toast.setGravity(Gravity.CENTER, 0, 0)
-                toast.show()
-            }
 
+
+                Toast.makeText(context,
+                    HtmlCompat.fromHtml("<background color='black'><font color='red'>Name: $strName Mobile: $incomingNumber</font></background>", HtmlCompat.FROM_HTML_MODE_LEGACY),
+                    Toast.LENGTH_LONG).show()
+            }
         }
     }
 }
